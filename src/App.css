@@ -1,0 +1,27 @@
+.nav--bar {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  background-color: #121212 !important;
+  color: white !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.row {
+  --bs-gutter-x: 1rem !important;
+  --bs-gutter-y: 1rem !important;
+}
+
+.nav-color {
+  color: white !important;
+}
+
+.card:hover {
+  scale: 1.1;
+  transition: all 0.3s ease-in-out;
+}
