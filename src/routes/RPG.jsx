@@ -124,7 +124,10 @@ const RPG = () => {
                             <Row>
                               <Col style={{ fontSize: 20, fontWeight: "bold" }}>
                                 <Card.Text>
-                                  <Link style={{ color: "#fff" }} to="/">
+                                  <Link
+                                    style={{ color: "#fff" }}
+                                    to={`/detail/${game.id}`}
+                                  >
                                     {game.name}
                                   </Link>
                                 </Card.Text>

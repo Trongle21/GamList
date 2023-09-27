@@ -24,17 +24,17 @@ function App() {
         { path: "/shooter", element: <Shooter /> },
         { path: "/rpg", element: <RPG /> },
         { path: "/multiplayer", element: <MassivelyMultiplayer /> },
-        { path: "/detail", element: <DetailGame /> },
+        { path: "/detail/:gameId", element: <DetailGame /> },
       ],
     },
   ]);
 
   return (
-    <GameProvider>
-      <AppProvider>
+    <AppProvider>
+      <GameProvider>
         <RouterProvider router={router} />
-      </AppProvider>
-    </GameProvider>
+      </GameProvider>
+    </AppProvider>
   );
 }
 

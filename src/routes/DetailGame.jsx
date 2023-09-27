@@ -1,13 +1,28 @@
 import React from "react";
 import { Container, Card, Row, Col } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import useGameContext from "../hooks/useGameContext";
 
 const DetailGame = () => {
+  const gameId = useParams();
+  const { filterGameById } = useGameContext();
+
+  const idGame = filterGameById(gameId.gameId);
+
+  let renderDetailGame;
+
+  if (idGame) {
+    renderDetailGame = idGame;
+  }
+
+  console.log(renderDetailGame);
+
   return (
     <Container>
       <Row>
         <Col xs={6}>
           <Card.Title style={{ fontSize: 36, fontWeight: 700 }}>
-            Grand Auto five
+            {renderDetailGame.name}
           </Card.Title>
           <Card.Text>
             Rockstar Games went bigger, since their previous installment of the
@@ -19,22 +34,23 @@ const DetailGame = () => {
           <Container>
             <Row>
               <Col xs={6}>
-                <Card.Title>Platform</Card.Title>
-                <Card.Text>PC</Card.Text>
-                <Card.Text>Play Station</Card.Text>
-                <Card.Text>Xbox</Card.Text>
+                <Card.Title style={{ fontSize: 30 }}>Platform</Card.Title>
+                {renderDetailGame.platforms.map((platform, index) =>
+                  <Card.Text key={index}>{platform.platform.name}</Card.Text>
+                )}
               </Col>
               <Col xs={6}>
-                <Card.Title>Metascore</Card.Title>
-                <Card.Text>92</Card.Text>
+                <Card.Title style={{ fontSize: 30 }}>Metascore</Card.Title>
+                <Card.Text>{renderDetailGame.metacritic}</Card.Text>
               </Col>
               <Col xs={6}>
-                <Card.Title>Genres</Card.Title>
-                <Card.Text>Action</Card.Text>
-                <Card.Text>Adventure</Card.Text>
+                <Card.Title style={{ fontSize: 30 }}>Genres</Card.Title>
+                {renderDetailGame.genres.map((genre, index) => (
+                  <Card.Text key={index}>{genre.name}</Card.Text>
+                ))}
               </Col>
               <Col xs={6}>
-                <Card.Title>Genres</Card.Title>
+                <Card.Title style={{ fontSize: 30 }}>Genres</Card.Title>
                 <Card.Text>Rockstar Games</Card.Text>
               </Col>
             </Row>
@@ -45,22 +61,22 @@ const DetailGame = () => {
             <Row>
               <Col xs={6}>
                 <Card>
-                  <Card.Img src="https://media.rawg.io/media/screenshots/a7c/a7c43871a54bed6573a6a429451564ef.jpg"></Card.Img>
+                  <Card.Img src={renderDetailGame.background_image}></Card.Img>
                 </Card>
               </Col>
               <Col xs={6}>
                 <Card>
-                  <Card.Img src="https://media.rawg.io/media/screenshots/a7c/a7c43871a54bed6573a6a429451564ef.jpg"></Card.Img>
+                  <Card.Img src={renderDetailGame.background_image}></Card.Img>
                 </Card>
               </Col>
               <Col xs={6}>
                 <Card>
-                  <Card.Img src="https://media.rawg.io/media/screenshots/a7c/a7c43871a54bed6573a6a429451564ef.jpg"></Card.Img>
+                  <Card.Img src={renderDetailGame.background_image}></Card.Img>
                 </Card>
               </Col>
               <Col xs={6}>
                 <Card>
-                  <Card.Img src="https://media.rawg.io/media/screenshots/a7c/a7c43871a54bed6573a6a429451564ef.jpg"></Card.Img>
+                  <Card.Img src={idGame.background_image}></Card.Img>
                 </Card>
               </Col>
             </Row>

@@ -40,10 +40,18 @@ const GameProvider = ({ children }) => {
   const [arrange, setArrange] = useState("Date");
   const [search, setSearch] = useState("");
 
+  const [state, dispactch] = useAppContext();
+
+  const { games } = state;
+
   const handleArrange = (value) => {
     setArrange(value);
   };
 
+  const filterGameById = (id) => {
+    return games.results && games.results.find((game) => game.id === +id);
+  };
+  filterGameById();
   return (
     <GameContext.Provider
       value={{
@@ -51,6 +59,7 @@ const GameProvider = ({ children }) => {
         onArrange: handleArrange,
         search,
         setSearch,
+        filterGameById,
       }}
     >
       {children}

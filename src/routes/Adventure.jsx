@@ -124,7 +124,10 @@ const Adventure = () => {
                             <Row>
                               <Col style={{ fontSize: 20, fontWeight: "bold" }}>
                                 <Card.Text>
-                                  <Link style={{ color: "#fff" }} to="/">
+                                  <Link
+                                    to={`/detail/${game.id}`}
+                                    style={{ color: "#fff" }}
+                                  >
                                     {game.name}
                                   </Link>
                                 </Card.Text>

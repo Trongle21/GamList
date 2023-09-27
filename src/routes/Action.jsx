@@ -9,8 +9,6 @@ import useAppContext from "../hooks/useAppContext";
 import useGameContext from "../hooks/useGameContext";
 // import RenderGame from "../components/RenderGame";
 
-
-
 const Action = () => {
   const [state, dispactch] = useAppContext();
 
@@ -59,8 +57,14 @@ const Action = () => {
               game.genres.map((genres) => {
                 if (genres.name === "Action") {
                   return (
-                    <Col lg={4} md={6} sm={12} key={game.name} content="list--games">
-                      <Card >
+                    <Col
+                      lg={4}
+                      md={6}
+                      sm={12}
+                      key={game.name}
+                      content="list--games"
+                    >
+                      <Card>
                         <Card.Img
                           variant="top"
                           style={{ width: `100%` }}
@@ -126,7 +130,10 @@ const Action = () => {
                             <Row>
                               <Col style={{ fontSize: 20, fontWeight: "bold" }}>
                                 <Card.Text>
-                                  <Link style={{ color: "#fff" }} to="/">
+                                  <Link
+                                    to={`/detail/${game.id}`}
+                                    style={{ color: "#fff" }}
+                                  >
                                     {game.name}
                                   </Link>
                                 </Card.Text>
