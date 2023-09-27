@@ -9,6 +9,8 @@ import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
 import useGameContext from "../hooks/useGameContext";
 import { Button } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header = () => {
   const { search, setSearch } = useGameContext();
@@ -16,6 +18,8 @@ const Header = () => {
   const handleSearch = (e) => {
     setSearch(e);
   };
+
+  const notify = () => toast("Bạn đang ở dark mode rồi!");
 
   return (
     <header>
@@ -50,7 +54,10 @@ const Header = () => {
             </Container>
           </Col>
           <Col xs={2}>
-            <Button variant="dark">Dark Mode</Button>
+            <Button variant="dark" onClick={notify}>
+              Dark Mode
+            </Button>
+            <ToastContainer />
           </Col>
         </Row>
       </Container>
