@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Card } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -6,40 +6,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Filter from "../components/Filter";
 import { Link } from "react-router-dom";
 import useAppContext from "../hooks/useAppContext";
-import useGameContext from "../hooks/useGameContext";
-// import RenderGame from "../components/RenderGame";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const RPG = () => {
-  const [state, dispactch] = useAppContext();
+  const [state, dispatch, { fetchData, loading, error }] = useAppContext();
 
-  const { arrange } = useGameContext();
+  const { games, listGames } = state;
 
-  const { games, search } = state;
+  let renderGames;
 
-  let arrangeGames;
-
-  if (arrange == "Date") {
-    arrangeGames =
-      games.results &&
-      games.results
-        .slice()
-        .sort((a, b) => new Date(b.updated) - new Date(a.updated));
-  } else if (arrange == "Name") {
-    arrangeGames = games.results
-      .slice()
-      .sort((a, b) => a.name.localeCompare(b.name));
-  } else if (arrange == "Score") {
-    arrangeGames = games.results
-      .slice()
-      .sort((a, b) => b.metacritic - a.metacritic);
+  if (listGames.length < 1) {
+    renderGames = games;
   } else {
-    arrangeGames = games.results;
-  }
-
-  if (search && games && games.results) {
-    arrangeGames = games.results.filter((game) =>
-      game.name.toLowerCase().includes(search.toLowerCase())
-    );
+    renderGames = listGames;
   }
 
   return (
@@ -51,13 +30,25 @@ const RPG = () => {
       </Container>
       <Filter />
       <Container style={{ paddingTop: 20 }}>
-        <Row>
-          {games.results &&
-            arrangeGames.map((game) =>
+        <InfiniteScroll
+          dataLength={games.length}
+          next={fetchData}
+          hasMore={true}
+          style={{ overflow: "hidden" }}
+          loader={<h4>Loading...</h4>}
+        >
+          <Row>
+            {renderGames.map((game) =>
               game.genres.map((genres) => {
                 if (genres.name === "RPG") {
                   return (
-                    <Col lg={4} md={6} sm={12} key={game.name}>
+                    <Col
+                      lg={4}
+                      md={6}
+                      sm={12}
+                      key={game.name}
+                      content="list--games"
+                    >
                       <Card>
                         <Card.Img
                           variant="top"
@@ -125,8 +116,8 @@ const RPG = () => {
                               <Col style={{ fontSize: 20, fontWeight: "bold" }}>
                                 <Card.Text>
                                   <Link
-                                    style={{ color: "#fff" }}
                                     to={`/detail/${game.id}`}
+                                    style={{ color: "#fff" }}
                                   >
                                     {game.name}
                                   </Link>
@@ -151,7 +142,16 @@ const RPG = () => {
                 }
               })
             )}
-        </Row>
+          </Row>
+        </InfiniteScroll>
+        <Container>
+          <Row>
+            <Col>
+              {loading && <p>Loading...</p>}
+              {error && <p>Error: {error.message}</p>}
+            </Col>
+          </Row>
+        </Container>
       </Container>
     </Container>
   );

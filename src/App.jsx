@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import { AppProvider, GameProvider } from "./store/Provider";
+import { AppProvider } from "./store/Provider";
 import Root from "./routes/Root";
 import Action from "./routes/Action";
 import Indie from "./routes/Indie";
@@ -31,9 +31,7 @@ function App() {
 
   return (
     <AppProvider>
-      <GameProvider>
-        <RouterProvider router={router} />
-      </GameProvider>
+      <RouterProvider router={router} />
     </AppProvider>
   );
 }

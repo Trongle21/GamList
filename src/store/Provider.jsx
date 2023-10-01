@@ -1,70 +1,62 @@
 import { useState, useEffect, useReducer } from "react";
 import AppContext from "../context/AppContext";
-import useAppContext from "../hooks/useAppContext";
-import GameContext from "../context/GameContext";
 import reducer, { initState } from "./reducer";
 import { actions } from ".";
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
-  useEffect(() => {
+  const { page, games } = state;
+
+  const fetchData = async () => {
     let ignore = false;
+    try {
+      const res = await fetch(
+        `https://api.rawg.io/api/games?key=c6135fd7a59a4865baff5f872e6f81d9&page=${page}`
+      );
+      const data = await res.json();
+      const dataGames = data.results;
 
-    const getData = async () => {
-      try {
-        const res = await fetch(
-          "https://api.rawg.io/api/games?key=c6135fd7a59a4865baff5f872e6f81d9"
-        );
-        const data = await res.json();
-        if (!ignore) dispatch(actions.getDataSuccess(data));
-      } catch (error) {
-        if (!ignore) dispatch(actions.getDataFailed(error));
+      if (!ignore) {
+        dispatch(actions.getDataSuccess(dataGames));
+        dispatch(actions.increasePage());
+      } else {
+        dispatch(actions.getDataFailed("Invalid data received from API"));
       }
-    };
-    getData();
+    } catch (error) {
+      if (!ignore) dispatch(actions.getDataFailed(error));
+    }
+  };
 
-    return () => {
-      ignore = true;
-    };
+  useEffect(() => {
+    fetchData();
   }, []);
 
+  const handleSearchGames = (data) => {
+    dispatch(actions.filterGamesBySearch(data));
+  };
+  const filterGameById = (id) => {
+    console.log(id);
+    return games && games.find((game) => game.id === +id);
+  };
+  filterGameById();
+
+
   return (
-    <AppContext.Provider value={[state, dispatch]}>
+    <AppContext.Provider
+      value={[
+        state,
+        dispatch,
+        {
+          fetchData,
+          handleSearchGames,
+          filterGameById,
+        },
+      ]}
+    >
       {children}
     </AppContext.Provider>
   );
 };
 
-const GameProvider = ({ children }) => {
-  const [arrange, setArrange] = useState("Date");
-  const [search, setSearch] = useState("");
-
-  const [state, dispactch] = useAppContext();
-
-  const { games } = state;
-
-  const handleArrange = (value) => {
-    setArrange(value);
-  };
-
-  const filterGameById = (id) => {
-    return games.results && games.results.find((game) => game.id === +id);
-  };
-  filterGameById();
-  return (
-    <GameContext.Provider
-      value={{
-        arrange,
-        onArrange: handleArrange,
-        search,
-        setSearch,
-        filterGameById,
-      }}
-    >
-      {children}
-    </GameContext.Provider>
-  );
-};
-
-export { AppProvider, GameProvider };
+export { AppProvider };

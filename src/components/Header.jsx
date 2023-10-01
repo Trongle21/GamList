@@ -7,16 +7,19 @@ import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
-import useGameContext from "../hooks/useGameContext";
 import { Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { actions } from "../store";
+import useAppContext from "../hooks/useAppContext";
 
 const Header = () => {
-  const { search, setSearch } = useGameContext();
+  const [state, dispatch, { handleSearchGames }] = useAppContext();
+
+  const { inputSearch } = state;
 
   const handleSearch = (e) => {
-    setSearch(e);
+    dispatch(actions.searchGames(e));
   };
 
   const notify = () => toast("Bạn đang ở dark mode rồi!");
@@ -45,8 +48,11 @@ const Header = () => {
                       // style={{ backgroundColor: "#212529" }}
                       placeholder="Tìm kiếm ..."
                       aria-describedby="basic-addon1"
-                      value={search}
-                      onChange={(e) => handleSearch(e.target.value)}
+                      value={inputSearch}
+                      onChange={(e) => {
+                        handleSearch(e.target.value),
+                          handleSearchGames(e.target.value);
+                      }}
                     />
                   </InputGroup>
                 </Col>

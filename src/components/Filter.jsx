@@ -1,6 +1,7 @@
 import React from "react";
-import { Container, Row, Col, Form, Dropdown } from "react-bootstrap";
-import useGameContext from "../hooks/useGameContext";
+import { Container, Row, Col, Dropdown } from "react-bootstrap";
+import useAppContext from "../hooks/useAppContext";
+import { actions } from "../store";
 
 const dataArrange = [
   {
@@ -17,11 +18,14 @@ const dataArrange = [
   },
 ];
 const Filter = () => {
-  const { onArrange, arrange, setSearch } = useGameContext();
+  const [state, dispatch] = useAppContext();
+
+  const { select } = state;
 
   const handleArrange = (data) => {
-    onArrange(data);
-    setSearch("");
+    dispatch(actions.selectGames(data));
+    dispatch(actions.searchGames(""));
+    dispatch(actions.filterGameBySelect());
   };
 
   return (
@@ -37,7 +41,7 @@ const Filter = () => {
                 <Dropdown.Item
                   key={data.id}
                   href="#/action-1"
-                  value={arrange}
+                  value={select}
                   onClick={() => handleArrange(data.name)}
                 >
                   {data.name}

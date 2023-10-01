@@ -1,11 +1,12 @@
 import React from "react";
 import { Container, Card, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import useGameContext from "../hooks/useGameContext";
+import useAppContext from "../hooks/useAppContext";
 
 const DetailGame = () => {
   const gameId = useParams();
-  const { filterGameById } = useGameContext();
+
+  const [state, dispatch, { filterGameById }] = useAppContext();
 
   const idGame = filterGameById(gameId.gameId);
 
@@ -14,8 +15,6 @@ const DetailGame = () => {
   if (idGame) {
     renderDetailGame = idGame;
   }
-
-  console.log(renderDetailGame);
 
   return (
     <Container>
@@ -35,9 +34,9 @@ const DetailGame = () => {
             <Row>
               <Col xs={6}>
                 <Card.Title style={{ fontSize: 30 }}>Platform</Card.Title>
-                {renderDetailGame.platforms.map((platform, index) =>
+                {renderDetailGame.platforms.map((platform, index) => (
                   <Card.Text key={index}>{platform.platform.name}</Card.Text>
-                )}
+                ))}
               </Col>
               <Col xs={6}>
                 <Card.Title style={{ fontSize: 30 }}>Metascore</Card.Title>
