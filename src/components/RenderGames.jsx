@@ -37,7 +37,7 @@ const RenderGames = ({ genresName }) => {
             {games &&
               games.map((game) =>
                 game.genres.map((genres) => {
-                  if (genres.slug === selectGenres) {
+                  if (genres.name === selectGenres) {
                     return (
                       <Col
                         lg={4}

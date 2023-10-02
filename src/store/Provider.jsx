@@ -4,7 +4,7 @@ import reducer, { initState } from "./reducer";
 import { actions } from ".";
 
 const AppProvider = ({ children }) => {
-  const [selectGenres, setSelectGenres] = useState("action");
+  const [selectGenres, setSelectGenres] = useState("Action");
   const [state, dispatch] = useReducer(reducer, initState);
   const { page, games, inputSearch } = state;
 
@@ -20,18 +20,9 @@ const AppProvider = ({ children }) => {
         `https://api.rawg.io/api/games?key=c6135fd7a59a4865baff5f872e6f81d9&page=${page}`
       );
       const data = await res.json();
-      let dataGames;
-      dataGames = data.results.filter((game) => {
-        const isMatch =
-          game.name &&
-          game.name.toLowerCase().includes(inputSearch.toLowerCase());
-        return isMatch;
-      });
-      console.log(dataGames);
-      // console.log(page);
-      // console.log(dataGames);
+      const dataGames = data.results;
 
-      if (!ignore && inputSearch.length < 1) {
+      if (!ignore) {
         dispatch(actions.getDataSuccess(dataGames));
       }
     } catch (error) {
