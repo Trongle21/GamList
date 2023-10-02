@@ -32,11 +32,8 @@ const AppProvider = ({ children }) => {
     fetchData();
   }, []);
 
-  const handleSearchGames = (data) => {
-    dispatch(actions.filterGamesBySearch(data));
-  };
+
   const filterGameById = (id) => {
-    console.log(id);
     return games && games.find((game) => game.id === +id);
   };
   filterGameById();
@@ -49,7 +46,7 @@ const AppProvider = ({ children }) => {
         dispatch,
         {
           fetchData,
-          handleSearchGames,
+          // handleSearchGames,
           filterGameById,
         },
       ]}

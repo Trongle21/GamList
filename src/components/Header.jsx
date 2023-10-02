@@ -14,15 +14,18 @@ import { actions } from "../store";
 import useAppContext from "../hooks/useAppContext";
 
 const Header = () => {
-  const [state, dispatch, { handleSearchGames }] = useAppContext();
+  const [state, dispatch] = useAppContext();
 
   const { inputSearch } = state;
 
-  const handleSearch = (e) => {
-    dispatch(actions.searchGames(e));
-  };
-
   const notify = () => toast("Bạn đang ở dark mode rồi!");
+
+  const handleSearchChange = (e) => {
+    const searchTerm = e.target.value;
+    dispatch(actions.searchGames(searchTerm));
+    dispatch(actions.filterGamesBySearch(searchTerm));
+    dispatch(actions.getDataSuccess([]));
+  };
 
   return (
     <header>
@@ -49,10 +52,7 @@ const Header = () => {
                       placeholder="Tìm kiếm ..."
                       aria-describedby="basic-addon1"
                       value={inputSearch}
-                      onChange={(e) => {
-                        handleSearch(e.target.value),
-                          handleSearchGames(e.target.value);
-                      }}
+                      onChange={handleSearchChange}
                     />
                   </InputGroup>
                 </Col>

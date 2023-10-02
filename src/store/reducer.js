@@ -19,7 +19,6 @@ const initState = {
 };
 const reducer = (state, action) => {
   let filterGames;
-
   let increase;
   switch (action.type) {
     case GET_DATA_SUCCESS:
@@ -59,7 +58,7 @@ const reducer = (state, action) => {
       }
       return {
         ...state,
-        listGames: filterGames,
+        games: filterGames,
       };
 
     case SELECT_GAMES:
@@ -86,7 +85,7 @@ const reducer = (state, action) => {
       }
       return {
         ...state,
-        listGames: filterGames,
+        games: filterGames,
       };
 
     default:
