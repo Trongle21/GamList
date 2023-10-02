@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Image } from "react-bootstrap";
+import useAppContext from "../hooks/useAppContext";
 
 const navigation = [
   {
@@ -46,6 +47,7 @@ const navigation = [
 ];
 
 const Navigation = () => {
+  const [state, dispatch, { onSelectGenres }] = useAppContext();
   return (
     <>
       <Container>
@@ -55,7 +57,11 @@ const Navigation = () => {
       </Container>
 
       {navigation.map((nav, index) => (
-        <Container key={index} style={{ paddingBottom: 10 }}>
+        <Container
+          key={index}
+          style={{ paddingBottom: 10 }}
+          onClick={() => onSelectGenres(nav.name)}
+        >
           <Row>
             <Col xs={5} style={{ textAlign: "left" }}>
               <Image
@@ -66,7 +72,10 @@ const Navigation = () => {
               />
             </Col>
             <Col xs={5}>
-              <NavLink className="nav-color" to={nav.url}>
+              <NavLink
+                className="nav-color"
+                to={nav.url}
+              >
                 {" "}
                 {nav.name}
               </NavLink>

@@ -48,19 +48,6 @@ const reducer = (state, action) => {
         inputSearch: action.payload,
       };
 
-    case FILTER_GAMES_BY_SEARCH:
-      if (state.inputSearch && state.games.length > 0) {
-        filterGames = state.games.filter((game) =>
-          game.name.toLowerCase().includes(state.inputSearch.toLowerCase())
-        );
-      } else {
-        filterGames = state.games;
-      }
-      return {
-        ...state,
-        games: filterGames,
-      };
-
     case SELECT_GAMES:
       return {
         ...state,

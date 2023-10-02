@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { actions } from "../store";
 import useAppContext from "../hooks/useAppContext";
 
+// dispatch(actions.filterGamesBySearch(searchTerm));
+// dispatch(actions.getDataSuccess([]));
 const Header = () => {
   const [state, dispatch] = useAppContext();
 
@@ -20,11 +22,9 @@ const Header = () => {
 
   const notify = () => toast("Bạn đang ở dark mode rồi!");
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = async (e) => {
     const searchTerm = e.target.value;
     dispatch(actions.searchGames(searchTerm));
-    dispatch(actions.filterGamesBySearch(searchTerm));
-    dispatch(actions.getDataSuccess([]));
   };
 
   return (

@@ -4,40 +4,60 @@ import reducer, { initState } from "./reducer";
 import { actions } from ".";
 
 const AppProvider = ({ children }) => {
+  const [selectGenres, setSelectGenres] = useState("action");
   const [state, dispatch] = useReducer(reducer, initState);
-
-  const { page, games } = state;
+  const { page, games, inputSearch } = state;
 
   const fetchData = async () => {
     let ignore = false;
     try {
+      // const res = await fetch(
+      //   `https://api.rawg.io/api/games?search=${encodeURIComponent(
+      //     searchTerm
+      //   )}&key=c6135fd7a59a4865baff5f872e6f81d9&page=${page}`
+      // );
       const res = await fetch(
         `https://api.rawg.io/api/games?key=c6135fd7a59a4865baff5f872e6f81d9&page=${page}`
       );
       const data = await res.json();
-      const dataGames = data.results;
+      let dataGames;
+      dataGames = data.results.filter((game) => {
+        const isMatch =
+          game.name &&
+          game.name.toLowerCase().includes(inputSearch.toLowerCase());
+        return isMatch;
+      });
+      console.log(dataGames);
+      // console.log(page);
+      // console.log(dataGames);
 
-      if (!ignore) {
+      if (!ignore && inputSearch.length < 1) {
         dispatch(actions.getDataSuccess(dataGames));
-        dispatch(actions.increasePage());
-      } else {
-        dispatch(actions.getDataFailed("Invalid data received from API"));
       }
     } catch (error) {
       if (!ignore) dispatch(actions.getDataFailed(error));
     }
+
+    return () => {
+      ignore = true;
+    };
   };
+
+  console.log(games && games.length);
 
   useEffect(() => {
     fetchData();
-  }, []);
-
+  }, [inputSearch]);
 
   const filterGameById = (id) => {
     return games && games.find((game) => game.id === +id);
   };
   filterGameById();
 
+  const handleSelectGenres = (name) => {
+    setSelectGenres(name);
+    console.log(selectGenres);
+  };
 
   return (
     <AppContext.Provider
@@ -48,6 +68,8 @@ const AppProvider = ({ children }) => {
           fetchData,
           // handleSearchGames,
           filterGameById,
+          selectGenres,
+          onSelectGenres: handleSelectGenres,
         },
       ]}
     >
